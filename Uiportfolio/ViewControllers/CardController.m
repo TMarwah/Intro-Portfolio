@@ -61,7 +61,8 @@ static GAME_MODE gameMode;
         case END:       // End is a replay with different prompt
             // Start Play mode
             gameOver.alpha = 0;
-            //if(player deck is larger than computer deck then print
+            //if(player deck is larger than computer deck then print)
+            // FIX THE BELOW
             if (playerDeckWinsCnt.text.integerValue > computerDeckWinsCnt.text.integerValue) {
                 gameOver.text = [NSString stringWithFormat:@"Congrats! You Win!"];
             }
@@ -75,7 +76,8 @@ static GAME_MODE gameMode;
             
         case PLAYER:
             [self playerCard];
-            gameState = COMPUTER;
+            // gameState = COMPUTER;
+            // GAMESTATE computer depricated with the addition of semi AUTONOMOUS mode
             [self computerCard];
             gameState = EVAL;
             break;
@@ -84,7 +86,6 @@ static GAME_MODE gameMode;
             // [self computerCard];
             // gameState = EVAL;
             break;
-            
         case EVAL:
             // Eval Cards returns true if game reaches END state
             if ( [self evalCards] ) {
