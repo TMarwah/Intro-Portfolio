@@ -63,7 +63,7 @@ static GAME_MODE gameMode;
             gameOver.alpha = 0;
             //if(player deck is larger than computer deck then print)
             // FIX THE BELOW
-            if (playerDeckWinsCnt.text.integerValue > computerDeckWinsCnt.text.integerValue) {
+            if (playerDeckWinsCnt.text.intValue > computerDeckWinsCnt.text.intValue) {
                 gameOver.text = [NSString stringWithFormat:@"Congrats! You Win!"];
             }
             else {
