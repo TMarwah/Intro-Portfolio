@@ -76,11 +76,13 @@ static GAME_MODE gameMode;
         case PLAYER:
             [self playerCard];
             gameState = COMPUTER;
+            [self computerCard];
+            gameState = EVAL;
             break;
             
         case COMPUTER:
-            [self computerCard];
-            gameState = EVAL;
+            // [self computerCard];
+            // gameState = EVAL;
             break;
             
         case EVAL:
