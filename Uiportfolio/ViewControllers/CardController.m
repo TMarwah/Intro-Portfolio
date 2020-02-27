@@ -33,6 +33,9 @@ static GAME_STATE gameState;
 typedef enum {AUTONOMOUS, MANUAL}  GAME_MODE;
 static GAME_MODE gameMode;
 
+//variables used to determine the winner, almost like a score system
+int playercardwincount = 0;
+int computercardwincount = 0;
 /**
 * Prepare for the game, start a fun demo screen
 */
@@ -63,7 +66,8 @@ static GAME_MODE gameMode;
             gameOver.alpha = 0;
             //if(player deck is larger than computer deck then print)
             // FIX THE BELOW
-            if (playerDeckWinsCnt.text.intValue > computerDeckWinsCnt.text.intValue) {
+            //if (playerDeckWinsCnt.text.intValue > computerDeckWinsCnt.text.intValue) {
+            if (playercardwincount > computercardwincount) {
                 gameOver.text = [NSString stringWithFormat:@"Congrats! You Win!"];
             }
             else {
@@ -293,6 +297,7 @@ static GAME_MODE gameMode;
     int computerValue = (warZone[1].symbol == Ace) ? SYMBOL_CNT : warZone[1].value;
     if ( playerValue >= computerValue )
     {
+        playercardwincount++;
         // Player wins
         // Transfer update card 1
         card2handcp( &playerWins[playerCNT], warZone[0] );
@@ -302,12 +307,14 @@ static GAME_MODE gameMode;
         NSString *image2 = [NSString stringWithFormat:@"%s.png" , playerWins[playerCNT++].cImage] ;
         // Paint counter and cards to screen
         playerDeckWinsCnt.text = [NSString stringWithFormat:@"%d" , playerCNT];
+        // playercardwincount = playerCNT;
         [playerWins1 setImage:[UIImage imageNamed:image1]];          // computer winnings
         [playerWins2 setImage:[UIImage imageNamed:image2]];
         
     } else {
         // Computer winns
         // Transfer update card 1
+        computercardwincount++;
         card2handcp( &computerWins[computerCNT], warZone[0] );
         NSString *image1 = [NSString stringWithFormat:@"%s.png" , computerWins[computerCNT++].cImage] ;
         // Transfer update card 2
@@ -315,6 +322,7 @@ static GAME_MODE gameMode;
         NSString *image2 = [NSString stringWithFormat:@"%s.png" , computerWins[computerCNT++].cImage] ;
         // Paint counter and cards to screen
         computerDeckWinsCnt.text = [NSString stringWithFormat:@"%d" , computerCNT];
+        // computercardwincount = computerCNT;
         [computerWins1 setImage:[UIImage imageNamed:image1]];          // computer winnings
         [computerWins2 setImage:[UIImage imageNamed:image2]];
 
