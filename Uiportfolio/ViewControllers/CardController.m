@@ -18,7 +18,7 @@
 
 // Game State Message correspond to GAME_STATE enums
 static NSString *gameStateMsgs[]=
-    {@"...... Tap on screen to start your own game of war ......",
+    {@"...... Tap on the card to start your own game of war ......",
      @"...... Tap on screen to play your card in War zone ......",
      @".... Tap on screen to play computer card in War zone ....",
      @"...... Tap on screen to evaluate cards in War zone ......",
@@ -107,6 +107,34 @@ int computercardwincount = 0;
 /**
 * The method touchesBegan initiates GAME_STATE transitions
 */
+
+-(IBAction)touches:(id)sender {
+    #ifdef CARDLOGGING
+        NSLog(@"touchesBegan state: %d", gameState);
+    #endif
+        
+        // turn user interaction off as swipe begins
+        [self.view setUserInteractionEnabled:NO];
+
+        // Play Game manually
+        if (gameMode  == AUTONOMOUS)
+        {
+            [self.autonomousTimer invalidate];
+            [self.marqueeTimer invalidate];
+            gameMode = MANUAL;
+            gameState = START;
+        }
+        // Play click through gameControl
+        [self gameControl];
+        gameMarquee.hidden = TRUE;
+    
+    #ifdef CARDLOGGING
+        NSLog(@"touchesEnded state: %d", gameState);
+    #endif
+        
+        [self.view setUserInteractionEnabled:YES];
+}
+/*
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
 #ifdef CARDLOGGING
     NSLog(@"touchesBegan state: %d", gameState);
@@ -127,10 +155,13 @@ int computercardwincount = 0;
     [self gameControl];
     gameMarquee.hidden = TRUE;
  }
+ */
 
 /**
 * Only used to reenable user interaction.
 */
+
+/*
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
 #ifdef CARDLOGGING
     NSLog(@"touchesEnded state: %d", gameState);
@@ -139,9 +170,7 @@ int computercardwincount = 0;
     [self.view setUserInteractionEnabled:YES];
 }
 
-/**
-* Scrolling message provides instruction how to transition from Demo to Playing game
-*/
+// Scrolling message provides instruction how to transition from Demo to Playing game
 -(void)gameStateMsg {
  
     if (gameMode == MANUAL)
@@ -152,7 +181,7 @@ int computercardwincount = 0;
     }
     
 }
-
+*/
 /**
 * Scrolling message provides instruction how to transition from Demo to Playing game
 */
@@ -297,7 +326,6 @@ int computercardwincount = 0;
     int computerValue = (warZone[1].symbol == Ace) ? SYMBOL_CNT : warZone[1].value;
     if ( playerValue >= computerValue )
     {
-        playercardwincount++;
         // Player wins
         // Transfer update card 1
         card2handcp( &playerWins[playerCNT], warZone[0] );
@@ -310,11 +338,12 @@ int computercardwincount = 0;
         // playercardwincount = playerCNT;
         [playerWins1 setImage:[UIImage imageNamed:image1]];          // computer winnings
         [playerWins2 setImage:[UIImage imageNamed:image2]];
+        playercardwincount++;
         
     } else {
         // Computer winns
         // Transfer update card 1
-        computercardwincount++;
+
         card2handcp( &computerWins[computerCNT], warZone[0] );
         NSString *image1 = [NSString stringWithFormat:@"%s.png" , computerWins[computerCNT++].cImage] ;
         // Transfer update card 2
@@ -325,7 +354,7 @@ int computercardwincount = 0;
         // computercardwincount = computerCNT;
         [computerWins1 setImage:[UIImage imageNamed:image1]];          // computer winnings
         [computerWins2 setImage:[UIImage imageNamed:image2]];
-
+        computercardwincount++;
     }
     // Clear War Zone
     [playerWarPlay setImage:[UIImage imageNamed:@"empty.png"]];
