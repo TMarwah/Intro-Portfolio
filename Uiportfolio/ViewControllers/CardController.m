@@ -61,24 +61,33 @@ int computercardwincount = 0;
     switch (gameState) {
             
         case START:
-        case END:       // End is a replay with different prompt
-            // Start Play mode
+            [self buildHands];          // build deck, computer and player hands
+            [self setupTable];
+            gameState = PLAYER;
             gameOver.alpha = 0;
-            //if(player deck is larger than computer deck then print)
-            // FIX THE BELOW
-            //if (playerDeckWinsCnt.text.intValue > computerDeckWinsCnt.text.intValue) {
+            break;
+        case END:       // End is a replay with different prompt
+            // Write scores to console
+            NSLog(@"player score: %d", playercardwincount);
+            NSLog(@"computer score: %d", computercardwincount);
+            // Start Play mode
+            //if (playerDeckWinsCnt.text.intValue > computerDeckWinsCnt.text.intValue)
             if (playercardwincount > computercardwincount) {
                 gameOver.text = [NSString stringWithFormat:@"Congrats! You Win!"];
             }
             else {
                 gameOver.text = [NSString stringWithFormat:@"Gameover, You Lost!"];
             }
+            gameOver.alpha = 1;
+            playercardwincount = 0;
+            computercardwincount = 0;
             [self buildHands];          // build deck, computer and player hands
             [self setupTable];
             gameState = PLAYER;
             break;
             
         case PLAYER:
+            gameOver.alpha = 0;
             [self playerCard];
             // gameState = COMPUTER;
             // GAMESTATE computer depricated with the addition of semi AUTONOMOUS mode
@@ -94,7 +103,6 @@ int computercardwincount = 0;
             // Eval Cards returns true if game reaches END state
             if ( [self evalCards] ) {
                 gameState = END;
-                gameOver.alpha = 1;
             } else {
                 gameState = PLAYER;
             }
